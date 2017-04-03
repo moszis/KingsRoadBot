@@ -1,7 +1,15 @@
 package com.bots.kingsroad;
 
+import java.awt.AWTException;
+import java.awt.Rectangle;
 import java.awt.Robot;
+import java.awt.Toolkit;
 import java.awt.event.InputEvent;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
 
 import com.bots.kingsroad.dto.Area;
 
@@ -28,6 +36,27 @@ public class OutputManager {
     		return false;
     	}
     	
+		
+	}
+	
+	public boolean createDesktopScreenshot(String format, String outputFile){
+		
+    	try{
+            Robot robot = new Robot();
+
+            Rectangle screenRect = new Rectangle(Toolkit.getDefaultToolkit().getScreenSize());
+            BufferedImage screenFullImage = robot.createScreenCapture(screenRect);
+            ImageIO.write(screenFullImage, format, new File(outputFile));
+             
+            System.out.println("A full screenshot saved! "+outputFile);
+            
+            return true;
+        
+        } catch (AWTException | IOException ex) {
+            System.err.println(ex);
+            
+            return false;
+        }
 		
 	}
 }
