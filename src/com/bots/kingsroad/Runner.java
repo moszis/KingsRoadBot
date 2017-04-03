@@ -35,10 +35,12 @@ public class Runner extends Thread{
 	    	outputManager.createDesktopScreenshot(format, scanAreaFile);
             
 	    	//Step 2 Find the location
+	    	//TODO: need ability to find best matching event
 	    	Area area = new Area();
 	    	try{
-	    		
-	    		area = patternRecognition.getMatchLocation(scanAreaFile, "templateFile.png", "result.jpg", Imgproc.TM_CCOEFF);
+	    		//TM_SQDIFF
+	    		//TM_CCOEFF
+	    		area = patternRecognition.getMatchLocation(scanAreaFile, "templateFile.png", "result.jpg", Imgproc.TM_CCOEFF_NORMED);
 	    	
 	    		System.out.println("## Location Found: "+area.x+ " : "+area.y);
 	    		
@@ -48,7 +50,7 @@ public class Runner extends Thread{
             
 	    	
 	    	//Step 3 Press the location
-            outputManager.clickTargetArea(area, true, 0, 1);
+            outputManager.clickTargetArea(area, true, 0, 0);
             
             //Step 4 sleep
             pause();

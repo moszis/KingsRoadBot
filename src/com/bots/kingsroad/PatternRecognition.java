@@ -17,18 +17,17 @@ import java.awt.AWTException;
 
 class PatternRecognition {
 	
-    public Area getMatchLocation(String inFile, String templateFile, String outFile,
+    public Area getMatchLocation(String scanFile, String templateFile, String outFile,
             int match_method) throws AWTException {
+    	
+    	
     	System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+    	
+    	
         System.out.println("\nRunning Template Matching");
 
-        System.out.println("inFile: "+inFile);
-
-
         
-        Mat img = Imgcodecs.imread(inFile);
-        
-        System.out.println("templateFile: "+templateFile);
+        Mat img   = Imgcodecs.imread(scanFile);    
         Mat templ = Imgcodecs.imread(templateFile);
 
         // / Create the result matrix
@@ -38,8 +37,11 @@ class PatternRecognition {
 
         // / Do the Matching and Normalize
         Imgproc.matchTemplate(img, templ, result, match_method);
+        
+        
+        //Core.normalize(result, result, 0, 1, Core.NORM_MINMAX, -1, new Mat());
         Core.normalize(result, result, 0, 1, Core.NORM_MINMAX, -1, new Mat());
-
+        
         // / Localizing the best match with minMaxLoc
         MinMaxLocResult mmr = Core.minMaxLoc(result);
 
