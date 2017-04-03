@@ -9,12 +9,15 @@ import org.opencv.core.Scalar;
 import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 
+import com.bots.kingsroad.dto.Area;
+
 import java.awt.AWTException;
+
 
 
 class PatternRecognition {
 	
-    public Point getMatchLocation(String inFile, String templateFile, String outFile,
+    public Area getMatchLocation(String inFile, String templateFile, String outFile,
             int match_method) throws AWTException {
     	System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
         System.out.println("\nRunning Template Matching");
@@ -53,6 +56,16 @@ class PatternRecognition {
         System.out.println("width: "+templ.cols());
         System.out.println("height: "+templ.rows());
         
+        
+        Area area = new Area();
+        area.x = matchLoc.x;
+        area.y = matchLoc.y;
+        area.width = templ.cols();
+        area.height = templ.rows();
+        area.generateCenterX();
+        area.generateCenterY();
+      
+        
         // / Show me what you got
         Imgproc.rectangle(img, matchLoc, new Point(matchLoc.x + templ.cols(),
                 matchLoc.y + templ.rows()), new Scalar(0, 255, 0));
@@ -67,7 +80,7 @@ class PatternRecognition {
         System.out.println("Writing " + outFile);
         Imgcodecs.imwrite(outFile, img);
         
-        return matchLoc;
+        return area;
     }
 }
 

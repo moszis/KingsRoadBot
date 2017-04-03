@@ -7,6 +7,8 @@ import javax.imageio.ImageIO;
 import org.opencv.core.Point;
 import org.opencv.imgproc.Imgproc;
 
+import com.bots.kingsroad.dto.Area;
+
 import java.awt.AWTException;
 import java.awt.Rectangle;
 import java.awt.Robot;
@@ -48,12 +50,12 @@ public class Runner extends Thread{
 	        }
             
 	    	//Step 2 Find the location
-	    	Point matchLoc = new Point();
+	    	Area area = new Area();
 	    	try{
 	    		
-	    		matchLoc = patternRecognition.getMatchLocation(scanArea, "templateFile.png", "result.jpg", Imgproc.TM_CCOEFF);
+	    		area = patternRecognition.getMatchLocation(scanArea, "templateFile.png", "result.jpg", Imgproc.TM_CCOEFF);
 	    	
-	    		System.out.println("## Location Found: "+matchLoc.x+ " : "+matchLoc.y);
+	    		System.out.println("## Location Found: "+area.x+ " : "+area.y);
 	    		
 	        } catch (AWTException ex) {
 	            System.err.println(ex);
@@ -61,14 +63,8 @@ public class Runner extends Thread{
             
 	    	
 	    	//Step 3 Press the location
-	    	try{
-	            Robot bot = new Robot();
-	            bot.mouseMove((int)matchLoc.x, (int)matchLoc.y);           
-	            bot.mousePress(InputEvent.BUTTON1_MASK);
-	            bot.mouseRelease(InputEvent.BUTTON1_MASK);
-	    	}catch (Exception e){
-	    		System.err.println(e);
-	    	}
+            OutputManager outputManager = new OutputManager();
+            outputManager.clickTargetArea(area, true, 0, 1);
 	    	
 	    	try {
 				TimeUnit.SECONDS.sleep(2);
