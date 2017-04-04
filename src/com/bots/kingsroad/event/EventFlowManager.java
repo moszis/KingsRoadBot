@@ -11,6 +11,23 @@ public class EventFlowManager {
 	
 	public boolean processNextEvent(){
 		
+		if(eventHandler.isInMission()){
+			if(!eventHandler.isInAutoMode()){
+				return eventHandler.activateAutoMode();
+			}else{
+				//Heal if needed and activated.
+				//
+			}
+			
+			//End Level ?
+		}
+		
+		if(eventHandler.isInTown()){
+			return eventHandler.goToMap();
+		}
+		
+		if(eventHandler.isOnMap()){
+			return eventHandler.goToQuestOnMap(currentQuestTemplate);
 		}
 		
 		return false;
