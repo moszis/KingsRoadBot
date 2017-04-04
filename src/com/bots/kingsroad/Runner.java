@@ -1,27 +1,20 @@
 package com.bots.kingsroad;
 
 import java.util.concurrent.TimeUnit;
-
-import org.opencv.imgproc.Imgproc;
-
-import com.bots.kingsroad.dto.Area;
-
-import java.awt.AWTException;
+import com.bots.kingsroad.event.EventFlowManager;
 
 public class Runner extends Thread{
 	
 	private volatile boolean runBot = true;
-	
-	PatternRecognition patternRecognition = new PatternRecognition();
-	OutputManager outputManager           = new OutputManager();
-	
-	String mapGuyTemplate   = "";
-	String zoneTemplate     = "";
-	String endLevelTemplate = "";
+
+	String questTemplate    = "Mission1.png";
     String format = "jpg";
     String scanAreaFile = "Desktop." + format;
-    
+
     int secondsBetweenCycles = 2;
+    
+	OutputManager outputManager           = new OutputManager();
+    EventFlowManager eventFlowManager     = new EventFlowManager(questTemplate);
     
 	public void run(){
 		
@@ -29,35 +22,11 @@ public class Runner extends Thread{
 
 	    while(runBot){
 	    	System.out.print(".");
-	    	
-	    	//Step 1 get new screenshot
 
 	    	outputManager.createDesktopScreenshot(format, scanAreaFile);
             
-	    	//Step 2 Find the location
-	    	//TODO: need ability to find best matching event
-	    	Area area = new Area();
-	    	try{
-	    		//TM_SQDIFF
-	    		//TM_CCOEFF
-	    		//TM_CCORR_NORMED
-	    		int algo = Imgproc.TM_CCOEFF_NORMED;
-	    		
-	    		//area = patternRecognition.getMatchLocation(scanAreaFile, "templateFile.png", algo);
-	    	
-	    		 patternRecognition.isMatch(scanAreaFile, "templateFile.png", algo, 70);
-	    		 
-	    		System.out.println("## Location Found: "+area.x+ " : "+area.y);
-	    		
-	        } catch (AWTException ex) {
-	            System.err.println(ex);
-	        }
-            
-	    	
-	    	//Step 3 Press the location
-           // outputManager.clickTargetArea(area, true, 0, 0);
-            
-            //Step 4 sleep
+	    	eventFlowManager.processNextEvent();
+	
             pause();
 	    }
 
