@@ -40,8 +40,13 @@ public class Runner extends Thread{
 	    	try{
 	    		//TM_SQDIFF
 	    		//TM_CCOEFF
-	    		area = patternRecognition.getMatchLocation(scanAreaFile, "templateFile.png", "result.jpg", Imgproc.TM_CCOEFF_NORMED);
+	    		//TM_CCORR_NORMED
+	    		int algo = Imgproc.TM_CCOEFF_NORMED;
+	    		
+	    		//area = patternRecognition.getMatchLocation(scanAreaFile, "templateFile.png", algo);
 	    	
+	    		 patternRecognition.isMatch(scanAreaFile, "templateFile.png", algo, 70);
+	    		 
 	    		System.out.println("## Location Found: "+area.x+ " : "+area.y);
 	    		
 	        } catch (AWTException ex) {
@@ -50,7 +55,7 @@ public class Runner extends Thread{
             
 	    	
 	    	//Step 3 Press the location
-            outputManager.clickTargetArea(area, true, 0, 0);
+           // outputManager.clickTargetArea(area, true, 0, 0);
             
             //Step 4 sleep
             pause();

@@ -16,18 +16,18 @@ import java.awt.AWTException;
 
 
 class PatternRecognition {
+
+	private int matchingAlgorithm = Imgproc.TM_CCOEFF_NORMED;
 	
-    public Area getMatchLocation(String scanFile, String templateFile, String outFile,
-            int match_method) throws AWTException {
+    public Area getMatchLocation(String scanAreaFile, String templateFile, int match_method) throws AWTException {
     	
+    	if(match_method < 0 || match_method > 5){
+    		match_method = matchingAlgorithm;
+    	}
     	
     	System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
     	
-    	
-        System.out.println("\nRunning Template Matching");
-
-        
-        Mat img   = Imgcodecs.imread(scanFile);    
+        Mat img   = Imgcodecs.imread(scanAreaFile);    
         Mat templ = Imgcodecs.imread(templateFile);
 
         // / Create the result matrix
@@ -35,16 +35,26 @@ class PatternRecognition {
         int result_rows = img.rows() - templ.rows() + 1;
         Mat result = new Mat(result_rows, result_cols, CvType.CV_32FC1);
 
+
         // / Do the Matching and Normalize
         Imgproc.matchTemplate(img, templ, result, match_method);
         
+       //Normalization seem to screw up the result
+       // Core.normalize(result, result, 0, 1, Core.NORM_MINMAX, -1, new Mat());
         
-        //Core.normalize(result, result, 0, 1, Core.NORM_MINMAX, -1, new Mat());
-        Core.normalize(result, result, 0, 1, Core.NORM_MINMAX, -1, new Mat());
         
         // / Localizing the best match with minMaxLoc
         MinMaxLocResult mmr = Core.minMaxLoc(result);
 
+        System.out.println("MinMaxLocResult.min"+ mmr.minVal);
+        System.out.println("MinMaxLocResult.max"+ mmr.maxVal);
+        
+        if(mmr.maxVal < 0.7){
+        	System.out.println("NO MATCH!!!!!!!!!!!");
+        }else{
+        	System.out.println("Success");
+        }
+        
         Point matchLoc;
         if (match_method == Imgproc.TM_SQDIFF
                 || match_method == Imgproc.TM_SQDIFF_NORMED) {
@@ -53,12 +63,6 @@ class PatternRecognition {
             matchLoc = mmr.maxLoc;
         }
 
-        System.out.println("matching location x: "+matchLoc.x);
-        System.out.println("matching location y: "+matchLoc.y);
-        System.out.println("width: "+templ.cols());
-        System.out.println("height: "+templ.rows());
-        
-        
         Area area = new Area();
         area.x = matchLoc.x;
         area.y = matchLoc.y;
@@ -66,8 +70,94 @@ class PatternRecognition {
         area.height = templ.rows();
         area.generateCenterX();
         area.generateCenterY();
-      
+
+        return area;
+    }
+    
+    
+    public boolean isMatch(String scanAreaFile, String templateFile, int match_method, double matchPercent) throws AWTException {
+    	
+    	if(match_method < 0 || match_method > 5){
+    		match_method = matchingAlgorithm;
+    	}
+    	
+    	System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+    	
+        Mat img   = Imgcodecs.imread(scanAreaFile);    
+        Mat templ = Imgcodecs.imread(templateFile);
+
+        // / Create the result matrix
+        int result_cols = img.cols() - templ.cols() + 1;
+        int result_rows = img.rows() - templ.rows() + 1;
+        Mat result = new Mat(result_rows, result_cols, CvType.CV_32FC1);
+
+
+        // / Do the Matching and Normalize
+        Imgproc.matchTemplate(img, templ, result, match_method);
         
+        // / Localizing the best match with minMaxLoc
+        MinMaxLocResult mmr = Core.minMaxLoc(result);
+
+        System.out.println("MinMaxLocResult.min"+ mmr.minVal);
+        System.out.println("MinMaxLocResult.max"+ mmr.maxVal);
+        
+        if(calculateMatchPercentage(match_method, mmr) > matchPercent){
+        	System.out.println("Success");
+        	return true;
+        }else{
+        	System.out.println("NO MATCH!!!!!!!!!!!");
+        	return false;
+        }
+
+    }
+    
+    
+    
+    public void generateMatchOutputFile(String scanAreaFile, String templateFile, String outFile,
+            int match_method) throws AWTException {
+    	
+    	if(match_method < 0 || match_method > 5){
+    		match_method = matchingAlgorithm;
+    	}
+    	
+    	System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+    	
+        Mat img   = Imgcodecs.imread(scanAreaFile);    
+        Mat templ = Imgcodecs.imread(templateFile);
+
+        // / Create the result matrix
+        int result_cols = img.cols() - templ.cols() + 1;
+        int result_rows = img.rows() - templ.rows() + 1;
+        Mat result = new Mat(result_rows, result_cols, CvType.CV_32FC1);
+
+
+        // / Do the Matching and Normalize
+        Imgproc.matchTemplate(img, templ, result, match_method);
+        
+       //Normalization seem to screw up the result
+       // Core.normalize(result, result, 0, 1, Core.NORM_MINMAX, -1, new Mat());
+        
+        
+        // / Localizing the best match with minMaxLoc
+        MinMaxLocResult mmr = Core.minMaxLoc(result);
+
+        System.out.println("MinMaxLocResult.min"+ mmr.minVal);
+        System.out.println("MinMaxLocResult.max"+ mmr.maxVal);
+        
+        if(mmr.maxVal < 0.7){
+        	System.out.println("NO MATCH!!!!!!!!!!!");
+        }else{
+        	System.out.println("Success");
+        }
+        
+        Point matchLoc;
+        if (match_method == Imgproc.TM_SQDIFF
+                || match_method == Imgproc.TM_SQDIFF_NORMED) {
+            matchLoc = mmr.minLoc;
+        } else {
+            matchLoc = mmr.maxLoc;
+        }
+
         // / Show me what you got
         Imgproc.rectangle(img, matchLoc, new Point(matchLoc.x + templ.cols(),
                 matchLoc.y + templ.rows()), new Scalar(0, 255, 0));
@@ -79,10 +169,22 @@ class PatternRecognition {
                 matchLoc.y + 20), new Scalar(0, 255, 0));
         
         // Save the visualized detection.
-        System.out.println("Writing " + outFile);
         Imgcodecs.imwrite(outFile, img);
+    }
+    
+    
+    public double calculateMatchPercentage(int match_method, MinMaxLocResult mmr){
+    	
+    	Double matchPercent = 0.0;
+    	
+        if (match_method == Imgproc.TM_SQDIFF || match_method == Imgproc.TM_SQDIFF_NORMED) {
+        	matchPercent = 100 - (mmr.minVal * 100);
+        } else {
+        	matchPercent = mmr.maxVal * 100;   
+        }
+        System.out.println("Match Percentage: "+matchPercent+"%");
         
-        return area;
+        return matchPercent;
     }
 }
 
