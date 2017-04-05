@@ -8,19 +8,21 @@ import com.bots.kingsroad.dto.Area;
 
 public class EventHandler {
 
-	String mapGuyTemplate           = "Byron.png";
-	String mapIndicatorTempalte     = "CloseMapButton.png";
-	String missionIndicatorTemplate = "QuestBookIcon.png";
-	String autoModeActiveTemplate   = "AutoModeActive.png";
-	String autoModeInactiveTemplate = "AutoModeInactive.png";
-	String playAloneButtonTemplate  = "PlayAloneButton.png";
-	String reviveFreeButtonTemplate = "ReviveFreeButton.png";
-	String lowHealthTemplate        = "HealthLowUseFood.png";
-	String endLevelTemplate         = "EndLevelButton.png";
-	String returnToTownTemplate     = "ReturnToTownButton.png";
+	String templateFolder = System.getProperty("templateFolder");
 	
-	String closePopUp1              = "ClosePopUp1InTown.png";
-	String closePopUp2              = "ClosePopUp2InTown.png";
+	String mapGuyTemplate           = templateFolder+"Byron.png";
+	String mapIndicatorTempalte     = templateFolder+"CloseMapButton.png";
+	String missionIndicatorTemplate = templateFolder+"QuestBookIcon.png";
+	String autoModeActiveTemplate   = templateFolder+"AutoModeActive.png";
+	String autoModeInactiveTemplate = templateFolder+"AutoModeInactive.png";
+	String playAloneButtonTemplate  = templateFolder+"PlayAloneButton.png";
+	String reviveFreeButtonTemplate = templateFolder+"ReviveFreeButton.png";
+	String lowHealthTemplate        = templateFolder+"HealthLowUseFood.png";
+	String endLevelTemplate         = templateFolder+"EndLevelButton.png";
+	String returnToTownTemplate     = templateFolder+"ReturnToTownButton.png";
+	
+	String closePopUp1              = templateFolder+"ClosePopUp1InTown.png";
+	String closePopUp2              = templateFolder+"ClosePopUp2InTown.png";
 	
 	PatternRecognition patternRecognition = new PatternRecognition();
 	OutputManager outputManager = new OutputManager();
@@ -45,7 +47,6 @@ public class EventHandler {
 	}
 	
 	public boolean isInMission(){
-		
 		if(patternRecognition.isMatch(missionIndicatorTemplate, 70)){
 			return true;
 		}else{

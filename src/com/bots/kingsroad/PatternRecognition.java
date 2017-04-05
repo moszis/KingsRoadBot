@@ -20,6 +20,7 @@ public class PatternRecognition {
 
 	private int matchingAlgorithm = Imgproc.TM_CCOEFF_NORMED;
 	private String defaultScanAreaFile   = "Desktop.jpg";
+	private String defaultResultFile     = "result.jpg";
 	private int defaultMatchPercent = 70;
 	
 	
@@ -94,14 +95,23 @@ public class PatternRecognition {
         	System.out.println("Success");
         	return true;
         }else{
-        	System.out.println("NO MATCH!!!!!!!!!!!");
+        	System.out.println("NO MATCH---");
         	return false;
         }
 
     }
     
     
-    
+	public void generateMatchOutputFile(String templateFile){
+		
+		try {
+			generateMatchOutputFile(defaultScanAreaFile, templateFile, defaultResultFile, matchingAlgorithm);
+		} catch (AWTException e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
     public void generateMatchOutputFile(String scanAreaFile, String templateFile, String outFile,
             int match_method) throws AWTException {
     	

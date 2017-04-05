@@ -14,6 +14,9 @@ public class Runner extends Thread{
 
     int secondsBetweenCycles = 2;
     
+    boolean testMode = true;
+    
+    
 	OutputManager outputManager           = new OutputManager();
     EventFlowManager eventFlowManager     = new EventFlowManager(questTemplate, difficultyTemplate);
     
@@ -21,17 +24,29 @@ public class Runner extends Thread{
 		
 		System.out.print("Running....");
 
-	    while(runBot){
-	    	System.out.print(".");
-
-	    	outputManager.createDesktopScreenshot(format, scanAreaFile);
-            
-	    	eventFlowManager.processNextEvent();
+		if(testMode){
+			runTest();
+		}else{
+		    while(runBot){
+		    	System.out.print(".");
 	
-            pause();
-	    }
-
+		    	outputManager.createDesktopScreenshot(format, scanAreaFile);
+	            
+		    	eventFlowManager.processNextEvent();
+		
+	            pause();
+		    }
+		}
 	}
+	
+	public void runTest(){
+		PatternRecognition pr = new PatternRecognition();
+		String testTemplate = System.getProperty("templateFolder")+System.getProperty("testTemplate");
+		System.out.println(testTemplate);
+		pr.getMatchArea(testTemplate);
+		pr.generateMatchOutputFile(testTemplate);
+	}
+	
 	
 	//Figure out how to take global input to control the bot; or write some jframe gimik
     public void stopRunning(){
