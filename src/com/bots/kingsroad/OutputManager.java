@@ -1,6 +1,9 @@
 package com.bots.kingsroad;
 
 import java.awt.AWTException;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
+import java.awt.MouseInfo;
 import java.awt.Rectangle;
 import java.awt.Robot;
 import java.awt.Toolkit;
@@ -30,6 +33,9 @@ public class OutputManager {
 		
     	try{
             Robot bot = new Robot();
+            
+            //Robot bot = new Robot(MouseInfo.getPointerInfo().getDevice());
+            
             bot.mouseMove((int)area.centerX, (int)area.centerY);    
            
             for(int x = 0; x < numClicks; x++){
@@ -71,10 +77,10 @@ public class OutputManager {
 	public boolean createDesktopScreenshot(String format, String outputFile){
 		
     	try{
-            Robot robot = new Robot();
+    		Robot bot = new Robot();
 
             Rectangle screenRect = new Rectangle(Toolkit.getDefaultToolkit().getScreenSize());
-            BufferedImage screenFullImage = robot.createScreenCapture(screenRect);
+            BufferedImage screenFullImage = bot.createScreenCapture(screenRect);
             ImageIO.write(screenFullImage, format, new File(outputFile));
 
             return true;
@@ -85,5 +91,29 @@ public class OutputManager {
             return false;
         }
 		
+	}
+	
+	public boolean createAllScreensScreenshot(String format, String outputFile){
+		try{
+		  GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+		  GraphicsDevice[] screens = ge.getScreenDevices();
+		  
+		  Rectangle allScreenBounds = new Rectangle();
+		  for (GraphicsDevice screen : screens) {
+		   Rectangle screenBounds = screen.getDefaultConfiguration().getBounds();
+		   
+		   allScreenBounds.width += screenBounds.width;
+		   allScreenBounds.height = Math.max(allScreenBounds.height, screenBounds.height);      
+		  }
+		  Robot robot = new Robot();
+		  BufferedImage screenShot = robot.createScreenCapture(allScreenBounds);
+		  
+          ImageIO.write(screenShot, format, new File(outputFile));
+          
+		}catch(Exception e){
+			return false;
+		}
+		
+		  return true;
 	}
 }

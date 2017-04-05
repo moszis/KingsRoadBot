@@ -1,6 +1,11 @@
 package com.bots.kingsroad;
 
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
+import java.awt.MouseInfo;
 import java.util.concurrent.TimeUnit;
+
+import com.bots.kingsroad.dto.Area;
 import com.bots.kingsroad.event.EventFlowManager;
 
 public class Runner extends Thread{
@@ -40,11 +45,16 @@ public class Runner extends Thread{
 	}
 	
 	public void runTest(){
+
+		outputManager.createAllScreensScreenshot(format, scanAreaFile);
 		PatternRecognition pr = new PatternRecognition();
 		String testTemplate = System.getProperty("templateFolder")+System.getProperty("testTemplate");
 		System.out.println(testTemplate);
-		pr.getMatchArea(testTemplate);
+		
+		Area area = pr.getMatchArea(testTemplate);
 		pr.generateMatchOutputFile(testTemplate);
+		
+		outputManager.clickTargetArea(area);
 	}
 	
 	
