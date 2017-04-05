@@ -7,14 +7,15 @@ public class Runner extends Thread{
 	
 	private volatile boolean runBot = true;
 
-	String questTemplate    = "Mission1.png";
+	String questTemplate      = "MapMissionHuntingTrail.png";
+	String difficultyTemplate = "PlayChampionButton.png";
     String format = "jpg";
     String scanAreaFile = "Desktop." + format;
 
     int secondsBetweenCycles = 2;
     
 	OutputManager outputManager           = new OutputManager();
-    EventFlowManager eventFlowManager     = new EventFlowManager(questTemplate);
+    EventFlowManager eventFlowManager     = new EventFlowManager(questTemplate, difficultyTemplate);
     
 	public void run(){
 		

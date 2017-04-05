@@ -17,7 +17,10 @@ public class Area implements Serializable {
 	public double width;
 	
 	public double height;
-
+	
+	public double percentMatch;
+	
+	public boolean isMatch;
 	
 	public double calculateCenterX(){
 		return x+width/2;
@@ -87,11 +90,28 @@ public class Area implements Serializable {
 		return serialVersionUID;
 	}
 
+	public double getPercentMatch() {
+		return percentMatch;
+	}
+
+	public void setPercentMatch(double percentMatch) {
+		this.percentMatch = percentMatch;
+	}
+
+	public boolean isMatch() {
+		return isMatch;
+	}
+
+	public void setMatch(boolean isMatch) {
+		this.isMatch = isMatch;
+	}
+
 	@Override
 	public String toString() {
 		return "Area [x=" + x + ", y=" + y + ", centerX=" + centerX + ", centerY=" + centerY + ", width=" + width
-				+ ", height=" + height + "]";
+				+ ", height=" + height + ", percentMatch=" + percentMatch + ", isMatch=" + isMatch + "]";
 	}
+
 
 	
 }

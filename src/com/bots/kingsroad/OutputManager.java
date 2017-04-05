@@ -5,6 +5,7 @@ import java.awt.Rectangle;
 import java.awt.Robot;
 import java.awt.Toolkit;
 import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -31,7 +32,7 @@ public class OutputManager {
     	try{
             Robot bot = new Robot();
             bot.mouseMove((int)area.centerX, (int)area.centerY);    
-            
+           
             for(int x = 0; x < numClicks; x++){
 	            bot.mousePress(InputEvent.BUTTON1_MASK);
 	            bot.mouseRelease(InputEvent.BUTTON1_MASK);
@@ -46,6 +47,27 @@ public class OutputManager {
     	
 		
 	}
+	
+	public boolean pressKey(int keyCode){
+		
+		//TODO: write random logic; for now just click center
+		
+    	try{
+            Robot bot = new Robot();
+            bot.keyPress(keyCode);
+            bot.keyRelease(keyCode); 
+
+            return true;
+    	}catch (Exception e){
+    		System.err.println(e);
+    		
+    		return false;
+    	}
+    	
+		
+	}
+	
+	
 	
 	public boolean createDesktopScreenshot(String format, String outputFile){
 		

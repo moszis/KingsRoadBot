@@ -20,6 +20,7 @@ public class PatternRecognition {
 
 	private int matchingAlgorithm = Imgproc.TM_CCOEFF_NORMED;
 	private String defaultScanAreaFile   = "Desktop.jpg";
+	private int defaultMatchPercent = 70;
 	
 	
 	public Area getMatchArea(String scanAreaFile, String templateFile){
@@ -53,8 +54,18 @@ public class PatternRecognition {
         } else {
             matchLoc = mmr.maxLoc;
         }
+        
 
-        return buildArea(matchLoc, templateFile);
+        Area area = buildArea(matchLoc, templateFile);
+        
+        if(calculateMatchPercentage(match_method, mmr) > defaultMatchPercent){
+        	area.setMatch(true);
+        }else{
+        	area.setMatch(false);
+        }
+        
+        return area;
+        
     }
     
     
