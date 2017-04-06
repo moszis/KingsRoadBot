@@ -120,7 +120,9 @@ public class EventHandler {
 		Area area = patternRecognition.getMatchArea(autoModeInactiveTemplate);
 		
 		if(area != null && area.isMatch()){
-			return outputManager.clickTargetArea(area);
+			boolean success = outputManager.clickTargetArea(area);
+			outputManager.moveMouseToTopLeftCorner();
+			return success;
 		}
 		
 		return false;

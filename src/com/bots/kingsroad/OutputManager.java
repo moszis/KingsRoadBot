@@ -3,7 +3,6 @@ package com.bots.kingsroad;
 import java.awt.AWTException;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
-import java.awt.MouseInfo;
 import java.awt.Rectangle;
 import java.awt.Robot;
 import java.awt.Toolkit;
@@ -33,8 +32,6 @@ public class OutputManager {
 		
     	try{
             Robot bot = new Robot();
-            
-            //Robot bot = new Robot(MouseInfo.getPointerInfo().getDevice());
             
             bot.mouseMove((int)area.centerX, (int)area.centerY);    
            
@@ -115,5 +112,23 @@ public class OutputManager {
 		}
 		
 		  return true;
+	}
+	
+	
+	public boolean moveMouseToTopLeftCorner(){
+
+    	try{
+            Robot bot = new Robot();
+            
+            bot.mouseMove(0, 0);    
+           
+            return true;
+    	}catch (Exception e){
+    		System.err.println(e);
+    		
+    		return false;
+    	}
+    	
+		
 	}
 }
