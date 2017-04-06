@@ -1,8 +1,5 @@
 package com.bots.kingsroad;
 
-import java.awt.GraphicsDevice;
-import java.awt.GraphicsEnvironment;
-import java.awt.MouseInfo;
 import java.util.concurrent.TimeUnit;
 
 import com.bots.kingsroad.dto.Area;
@@ -12,14 +9,16 @@ public class Runner extends Thread{
 	
 	private volatile boolean runBot = true;
 
-	String questTemplate      = "MapMissionHuntingTrail.png";
-	String difficultyTemplate = "PlayChampionButton.png";
+	String templateFolder = System.getProperty("templateFolder");
+	
+	String questTemplate      = templateFolder+"MapMissionHuntingTrail.png";
+	String difficultyTemplate = templateFolder+"PlayChampionButton.png";
     String format = "jpg";
     String scanAreaFile = "Desktop." + format;
 
     int secondsBetweenCycles = 2;
     
-    boolean testMode = true;
+    boolean testMode = false;
     
     
 	OutputManager outputManager           = new OutputManager();

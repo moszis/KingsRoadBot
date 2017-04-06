@@ -37,9 +37,12 @@ public class EventFlowManager {
 			//End Level ?
 		}
 		
-		eventHandler.closePopUpsInTown();
+		
 				
 		if(eventHandler.isInTown()){
+			
+			eventHandler.closePopUpsInTown();
+			
 			return eventHandler.goToMap();
 		}
 		

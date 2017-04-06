@@ -23,6 +23,7 @@ public class EventHandler {
 	
 	String closePopUp1              = templateFolder+"ClosePopUp1InTown.png";
 	String closePopUp2              = templateFolder+"ClosePopUp2InTown.png";
+	String closePopUp3              = templateFolder+"ClosePopUp3InTown.png";
 	
 	PatternRecognition patternRecognition = new PatternRecognition();
 	OutputManager outputManager = new OutputManager();
@@ -171,6 +172,12 @@ public class EventHandler {
 		}
 		
 		area = patternRecognition.getMatchArea(closePopUp2);
+		
+		if(area != null && area.isMatch()){
+			outputManager.clickTargetArea(area);
+		}
+		
+		area = patternRecognition.getMatchArea(closePopUp3);
 		
 		if(area != null && area.isMatch()){
 			outputManager.clickTargetArea(area);
