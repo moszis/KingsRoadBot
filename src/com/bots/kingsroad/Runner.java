@@ -11,7 +11,7 @@ public class Runner extends Thread{
 
 	String templateFolder = System.getProperty("templateFolder");
 	
-	String questTemplate      = templateFolder+"MapMissionHuntingTrail.png";
+	String questTemplate      = templateFolder+"MapMissionCalmwaterCrossing.png";
 	String difficultyTemplate = templateFolder+"PlayChampionButton.png";
     String format = "jpg";
     String scanAreaFile = "Desktop." + format;
