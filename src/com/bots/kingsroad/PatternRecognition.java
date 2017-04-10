@@ -218,7 +218,7 @@ public class PatternRecognition {
         	matchPercent = mmr.maxVal * 100;   
         }
         
-        DecimalFormat df = new DecimalFormat("####0.00");
+        //DecimalFormat df = new DecimalFormat("####0.00");
         //System.out.println("Match Percent: " + df.format(matchPercent)+"%");
         
         return matchPercent;
