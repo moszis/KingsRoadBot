@@ -24,19 +24,28 @@ public class PatternRecognition {
 	private int defaultMatchPercent = 70;
 	
 	
-	public Area getMatchArea(String scanAreaFile, String templateFile){
-		
-		return getMatchArea(scanAreaFile, templateFile, matchingAlgorithm);
-		
-	}
-	
 	public Area getMatchArea(String templateFile){
 		
-		return getMatchArea(defaultScanAreaFile, templateFile, matchingAlgorithm);
+		return getMatchArea(defaultScanAreaFile, templateFile, matchingAlgorithm, defaultMatchPercent);
 		
 	}
 	
-    public Area getMatchArea(String scanAreaFile, String templateFile, int match_method){
+	
+    public Area getMatchArea(String templateFile, int matchPercent){
+    	
+    	return getMatchArea(defaultScanAreaFile, templateFile, matchingAlgorithm, matchPercent);
+        
+    }
+    
+    
+	public Area getMatchArea(String scanAreaFile, String templateFile){
+		
+		return getMatchArea(scanAreaFile, templateFile, matchingAlgorithm, defaultMatchPercent);
+		
+	}
+	
+    
+    public Area getMatchArea(String scanAreaFile, String templateFile, int match_method, int matchPercent){
     	
     	if(match_method < 0 || match_method > 5){
     		match_method = matchingAlgorithm;
@@ -59,7 +68,7 @@ public class PatternRecognition {
 
         Area area = buildArea(matchLoc, templateFile);
         
-        if(calculateMatchPercentage(match_method, mmr) > defaultMatchPercent){
+        if(calculateMatchPercentage(match_method, mmr) > matchPercent){
         	area.setMatch(true);
         }else{
         	area.setMatch(false);
@@ -92,10 +101,10 @@ public class PatternRecognition {
 		}
 
         if(calculateMatchPercentage(match_method, mmr) > matchPercent){
-        	System.out.println("Success");
+        	//System.out.println("Success");
         	return true;
         }else{
-        	System.out.println("NO MATCH---");
+        	//System.out.println("NO MATCH---");
         	return false;
         }
 
@@ -210,7 +219,7 @@ public class PatternRecognition {
         }
         
         DecimalFormat df = new DecimalFormat("####0.00");
-        System.out.println("Match Percent: " + df.format(matchPercent)+"%");
+        //System.out.println("Match Percent: " + df.format(matchPercent)+"%");
         
         return matchPercent;
     }

@@ -20,17 +20,21 @@ public class EventHandler {
 	String lowHealthTemplate        = templateFolder+"HealthLowUseFood.png";
 	String endLevelTemplate         = templateFolder+"EndLevelButton.png";
 	String returnToTownTemplate     = templateFolder+"ReturnToTownButton.png";
+	String refreshTemplate          = templateFolder+"RefreshOnDisconnect.png";
+	String playButtonTemplate       = templateFolder+"PlayButton.png";
 	
 	String closePopUp1              = templateFolder+"ClosePopUp1InTown.png";
 	String closePopUp2              = templateFolder+"ClosePopUp2InTown.png";
 	String closePopUp3              = templateFolder+"ClosePopUp3InTown.png";
+	
+	String ssSpecialsPopUp          = templateFolder+"SecretSocietySpecials.png";
 	
 	PatternRecognition patternRecognition = new PatternRecognition();
 	OutputManager outputManager = new OutputManager();
 	
 	public boolean isInTown(){
 		
-		if(patternRecognition.isMatch(mapGuyTemplate, 70)){
+		if(patternRecognition.isMatch(mapGuyTemplate, 60)){
 			return true;
 		}else{
 			return false;
@@ -75,7 +79,7 @@ public class EventHandler {
 	
 	
 	public boolean goToMap(){
-		Area area = patternRecognition.getMatchArea(mapGuyTemplate);
+		Area area = patternRecognition.getMatchArea(mapGuyTemplate, 60);
 		
 		if(area != null && area.isMatch()){
 			return outputManager.clickTargetArea(area);	
@@ -185,4 +189,35 @@ public class EventHandler {
 			outputManager.clickTargetArea(area);
 		}
 	}
+	
+	
+	public void closeAnouncements(){
+		Area area = patternRecognition.getMatchArea(ssSpecialsPopUp);
+		
+		if(area != null && area.isMatch()){
+			outputManager.clickTargetArea(area);
+		}
+	}
+	
+	public boolean refreshOnDisconnect(){
+		Area area = patternRecognition.getMatchArea(refreshTemplate);
+		
+		if(area != null && area.isMatch()){
+			return outputManager.clickTargetArea(area);
+		}
+		
+		return false;
+	}
+	
+	public boolean play(){
+		Area area = patternRecognition.getMatchArea(playButtonTemplate);
+		
+		if(area != null && area.isMatch()){
+			return outputManager.clickTargetArea(area);
+		}
+		
+		return false;
+	}
+	
+	
 }

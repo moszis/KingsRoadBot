@@ -10,8 +10,9 @@ public class Runner extends Thread{
 	private volatile boolean runBot = true;
 
 	String templateFolder = System.getProperty("templateFolder");
+	String missionFolder = templateFolder+System.getProperty("missionSubFolder");
 	
-	String questTemplate      = templateFolder+"MapMissionCalmwaterCrossing.png";
+	String questTemplate      = missionFolder+"MapMission11Godwood.png";
 	String difficultyTemplate = templateFolder+"PlayChampionButton.png";
     String format = "jpg";
     String scanAreaFile = "Desktop." + format;
@@ -19,26 +20,89 @@ public class Runner extends Thread{
     int secondsBetweenCycles = 2;
     
     boolean testMode = false;
+    boolean useFood  = false;
     
     
 	OutputManager outputManager           = new OutputManager();
-    EventFlowManager eventFlowManager     = new EventFlowManager(questTemplate, difficultyTemplate);
+    EventFlowManager eventFlowManager     = new EventFlowManager(questTemplate, difficultyTemplate, useFood);
     
 	public void run(){
 		
-		System.out.print("Running....");
+		//codes:
+		// 1 - mission complete (Return to town)
+		// 2 - revived
+		// 3 - food used
+		// 4 - auto activated
+		// 5 - disconnected
+		// 6 - restarted
 
 		if(testMode){
 			runTest();
 		}else{
+			int cycle = 1;
+			int missions = 0;
+			int revived = 0;
+			int food    = 0;
+			int auto = 0;
+			int event = 0;
+			int disconnected = 0;
+			int restarted = 0;
+			
+			
+			  long startTime = System.nanoTime();
+		      long stopTime = 0;
+		      long elapsedTime = 0;
+		      long timePerMission = 0;
+
+			
 		    while(runBot){
-		    	System.out.print(".");
+		    	
+		    	System.out.println("running cycle "+cycle);
 	
 		    	outputManager.createDesktopScreenshot(format, scanAreaFile);
 	            
-		    	eventFlowManager.processNextEvent();
+		    	event = eventFlowManager.processNextEvent();
+		    	
+
 		
 	            pause();
+	            
+	            
+	            cycle++;
+	            
+		    	switch (event){
+			    	case 1: missions++;
+			    	case 2: revived++;
+			    	case 3: food++;
+			    	case 4: auto++;
+			    	case 5: disconnected++;
+			    	case 6: restarted++;
+		    	}
+		    	
+		    	System.out.println("missions complete: "+missions);
+		    	System.out.println("revived: "+revived);
+		    	System.out.println("Food Used: "+food);
+		    	System.out.println("Auto activations: "+auto);
+		    	System.out.println("Disconnected: "+disconnected);
+		    	System.out.println("Restarted: "+restarted);
+		    	
+		        stopTime = System.nanoTime();
+		        elapsedTime = stopTime - startTime;
+		        System.out.println("Total execution time: " +
+		                String.format("%d min, %d sec",
+		                        TimeUnit.NANOSECONDS.toMinutes(elapsedTime),
+		                        TimeUnit.NANOSECONDS.toSeconds(elapsedTime) -
+		                                TimeUnit.MINUTES.toSeconds(TimeUnit.NANOSECONDS.toMinutes(elapsedTime))));
+		        if(missions > 0 ){
+		        	timePerMission = elapsedTime/missions;
+			        System.out.println("Time Per mission: " +
+			                String.format("%d min, %d sec",
+			                        TimeUnit.NANOSECONDS.toMinutes(timePerMission),
+			                        TimeUnit.NANOSECONDS.toSeconds(timePerMission) -
+			                                TimeUnit.MINUTES.toSeconds(TimeUnit.NANOSECONDS.toMinutes(timePerMission))));
+	
+		        }
+		    
 		    }
 		}
 	}
