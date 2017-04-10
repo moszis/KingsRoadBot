@@ -15,7 +15,6 @@ import java.awt.AWTException;
 import java.text.DecimalFormat;
 
 
-
 public class PatternRecognition {
 
 	private int matchingAlgorithm = Imgproc.TM_CCOEFF_NORMED;
