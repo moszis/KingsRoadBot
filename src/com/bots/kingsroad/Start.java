@@ -14,7 +14,6 @@ public class Start{
 			runner.start();
 		}
 
-		//thread.stopRunning();
 
 	}
 	
