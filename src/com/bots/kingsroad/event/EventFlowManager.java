@@ -84,7 +84,7 @@ public class EventFlowManager {
 			inTown    = false;
 			onMap     = true;
 			
-			if(!eventHandler.selectPlayAloneOnMap()){
+			if(!eventHandler.selectPlayAloneOnMap() && !eventHandler.selectPlayMapOnMap()){
 				if(!eventHandler.selectQuestDifficultyOnMap(currentDifficultyTemplate)){
 					   eventHandler.goToQuestOnMap(currentQuestTemplate); 
 				}else{
