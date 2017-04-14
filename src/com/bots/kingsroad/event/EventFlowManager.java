@@ -1,11 +1,20 @@
 package com.bots.kingsroad.event;
 
+import java.util.concurrent.TimeUnit;
+
 public class EventFlowManager {
 	
 	EventHandler eventHandler = new EventHandler();
 	String currentQuestTemplate;
 	String currentDifficultyTemplate;
 	boolean useFood;
+	
+	long lastMissionStartTime = 0;
+	long inMissionTime = 0;
+	boolean inMission = false;
+	boolean inTown    = false;
+	boolean onMap     = false;
+	
 	
 	public EventFlowManager(String questTemplate, String difficultyTemplate, boolean useFood){
 		currentQuestTemplate      = questTemplate;
@@ -15,9 +24,24 @@ public class EventFlowManager {
 	
 	public int processNextEvent(){
 		
+		if(inMission){
+			if(TimeUnit.NANOSECONDS.toMinutes(inMissionTime) > 10){
+				System.out.println("**************");
+				//return to town
+			}else{
+				pause(15);
+			}
+		}
+		
 		if(eventHandler.isInMission()){
-			
-			System.out.println("IN MISSION");
+			if(!inMission){
+				inMission = true;
+				lastMissionStartTime = System.nanoTime();
+			}
+
+			inMissionTime = System.nanoTime() - lastMissionStartTime;
+			inTown        = false;
+			onMap         = false;
 	
 			if(eventHandler.reviveFree()) return 2;
 			
@@ -40,8 +64,12 @@ public class EventFlowManager {
 		}
 		
 		
-				
 		if(eventHandler.isInTown()){
+			
+			inMissionTime = 0;
+			inMission = false;
+			inTown    = true;
+			onMap     = false;
 			
 			eventHandler.closePopUpsInTown();
 			
@@ -50,6 +78,12 @@ public class EventFlowManager {
 		
 		
 		if(eventHandler.isOnMap()){
+			
+			inMissionTime = 0;
+			inMission = false;
+			inTown    = false;
+			onMap     = true;
+			
 			if(!eventHandler.selectPlayAloneOnMap()){
 				if(!eventHandler.selectQuestDifficultyOnMap(currentDifficultyTemplate)){
 					   eventHandler.goToQuestOnMap(currentQuestTemplate); 
@@ -62,10 +96,22 @@ public class EventFlowManager {
 		}
 		
 		if(eventHandler.refreshOnDisconnect()){
+			
+			inMissionTime = 0;
+			inMission = false;
+			inTown    = false;
+			onMap     = false;
+			
 			return 5;
 		}
 		
 		if(eventHandler.play()){
+			
+			inMissionTime = 0;
+			inMission = false;
+			inTown    = false;
+			onMap     = false;
+			
 			return 6;
 		}
 		
@@ -75,4 +121,12 @@ public class EventFlowManager {
 		return 0;
 	}
 
+	
+    private void pause(int seconds){
+    	try {
+			TimeUnit.SECONDS.sleep(seconds);
+		} catch (InterruptedException ie) {
+			ie.printStackTrace();
+		}
+    }
 }
