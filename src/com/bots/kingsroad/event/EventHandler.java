@@ -16,6 +16,7 @@ public class EventHandler {
 	String autoModeActiveTemplate   = templateFolder+"AutoModeActive.png";
 	String autoModeInactiveTemplate = templateFolder+"AutoModeInactive.png";
 	String playAloneButtonTemplate  = templateFolder+"PlayAloneButton.png";
+	String playMapButtonTemplate    = templateFolder+"PlayMapButton.png";
 	String reviveFreeButtonTemplate = templateFolder+"ReviveFreeButton.png";
 	String lowHealthTemplate        = templateFolder+"HealthLowUseFood.png";
 	String endLevelTemplate         = templateFolder+"EndLevelButton.png";
@@ -112,6 +113,16 @@ public class EventHandler {
 	
 	public boolean selectPlayAloneOnMap(){
 		Area area = patternRecognition.getMatchArea(playAloneButtonTemplate);
+		
+		if(area != null && area.isMatch()){
+			return outputManager.clickTargetArea(area);
+		}
+		
+		return false;
+	}
+	
+	public boolean selectPlayMapOnMap(){
+		Area area = patternRecognition.getMatchArea(playMapButtonTemplate);
 		
 		if(area != null && area.isMatch()){
 			return outputManager.clickTargetArea(area);
