@@ -78,7 +78,7 @@ public class EventFlowManager {
 		
 		
 		if(eventHandler.isOnMap()){
-			
+
 			inMissionTime = 0;
 			inMission = false;
 			inTown    = false;
