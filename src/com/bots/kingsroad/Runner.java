@@ -19,7 +19,7 @@ public class Runner extends Thread{
 
     int secondsBetweenCycles = 2;
     
-    boolean testMode = false;
+    boolean testMode = true;
     boolean useFood  = false;
     
     
