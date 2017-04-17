@@ -28,7 +28,7 @@ public class EventHandler {
 	String closePopUp2              = templateFolder+"ClosePopUp2InTown.png";
 	String closePopUp3              = templateFolder+"ClosePopUp3InTown.png";
 	
-	String ssSpecialsPopUp          = templateFolder+"SecretSocietySpecials.png";
+	String ssSpecialsPopUp          = templateFolder+"AssentionSpecials.png";
 	
 	PatternRecognition patternRecognition = new PatternRecognition();
 	OutputManager outputManager = new OutputManager();
@@ -53,7 +53,7 @@ public class EventHandler {
 	}
 	
 	public boolean isInMission(){
-		if(patternRecognition.isMatch(missionIndicatorTemplate, 70)){
+		if(patternRecognition.isMatch(missionIndicatorTemplate, 60)){
 			return true;
 		}else{
 			return false;

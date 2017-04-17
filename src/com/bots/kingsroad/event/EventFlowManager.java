@@ -25,15 +25,16 @@ public class EventFlowManager {
 	public int processNextEvent(){
 		
 		if(inMission){
-			if(TimeUnit.NANOSECONDS.toMinutes(inMissionTime) > 10){
-				System.out.println("**************");
+			if(TimeUnit.NANOSECONDS.toMinutes(inMissionTime) > 5){
+				System.out.println("MORE THAN @ MINUTES!!**************");
 				//return to town
 			}else{
-				pause(15);
+				//pause(15);
 			}
 		}
 		
 		if(eventHandler.isInMission()){
+			System.out.println("IN MISSION");
 			if(!inMission){
 				inMission = true;
 				lastMissionStartTime = System.nanoTime();
