@@ -29,7 +29,7 @@ public class EventFlowManager {
 				System.out.println("MORE THAN @ MINUTES!!**************");
 				//return to town
 			}else{
-				//pause(15);
+				pause(5);
 			}
 		}
 		

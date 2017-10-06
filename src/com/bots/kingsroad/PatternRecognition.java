@@ -12,7 +12,6 @@ import org.opencv.imgproc.Imgproc;
 import com.bots.kingsroad.dto.Area;
 
 import java.awt.AWTException;
-import java.text.DecimalFormat;
 
 
 public class PatternRecognition {
