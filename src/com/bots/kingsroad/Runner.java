@@ -12,11 +12,13 @@ public class Runner extends Thread{
 	String templateFolder = System.getProperty("templateFolder");
 	String missionFolder = templateFolder+System.getProperty("missionSubFolder");
 	
-	//String questTemplate      = missionFolder+"MapMission24AdamarsSanctum.png";
-	String questTemplate      = missionFolder+"MapMission7ExecutionerCamp.png";
-	//String difficultyTemplate = templateFolder+"PlayChampionButton.png";
+	String questTemplate      = missionFolder+"MapMission24AdamarsSanctum.png";
+	//String questTemplate      = missionFolder+"MapMission7ExecutionerCamp.png";
+	//String questTemplate      = missionFolder+"MapMission12LostHills.png";
+	//String questTemplate      = missionFolder+"MapMission13BlindsMansPass.png";
+	String difficultyTemplate = templateFolder+"PlayChampionButton.png";
 	//String difficultyTemplate = templateFolder+"PlayNormalButton.png";
-	String difficultyTemplate = templateFolder+"PlayHeroicButton.png";
+	//String difficultyTemplate = templateFolder+"PlayHeroicButton.png";
     String format = "jpg";
     String scanAreaFile = "Desktop." + format;
 
